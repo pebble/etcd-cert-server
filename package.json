@@ -1,0 +1,25 @@
+{
+  "name": "etcd-cert-server",
+  "version": "0.0.1",
+  "private": "true",
+  "scripts": {
+    "start": "node --harmony server.js",
+    "test": "mocha --recursive",
+    "cover": "istanbul cover _mocha -- --recursive"
+  },
+  "dependencies": {
+    "child-process-promise": "^1.1.0",
+    "concat-stream": "^1.5.0",
+    "fs-promise": "^0.3.1",
+    "pebble-koa-server": "git+https://1637ef6f13a5d0f008579819668bb4701f9585e8:x-oauth-basic@github.com/pebble/pebble-koa-server.git#3.0.0",
+    "tar-stream": "^1.2.1"
+  },
+  "devDependencies": {
+    "co-mocha": "^1.1.2",
+    "istanbul": "^0.3.21",
+    "mocha": "^2.3.2",
+    "supertest": "^1.1.0",
+    "temp": "^0.8.3"
+  },
+  "license": "MIT"
+}
