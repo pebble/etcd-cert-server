@@ -1,0 +1,12 @@
+{
+  "name": "etcd-cert-server",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "co-exec": "^1.1.0",
+    "pebble-koa-server": "git+https://1637ef6f13a5d0f008579819668bb4701f9585e8:x-oauth-basic@github.com/pebble/pebble-koa-server.git#3.0.0"
+  },
+  "license": "MIT"
+}
