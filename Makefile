@@ -11,13 +11,15 @@ build/docker-image:
 
 run: build/docker-image
 	docker run \
-	 	-p 8080:8080 \
-	 	-v /dev/urandom:/dev/random \
-	 	-it \
-	 	$(NAME)
+		-p 8080:8080 \
+		-v /dev/urandom:/dev/random \
+		--name $(NAME) \
+		-it \
+		$(NAME)
 
 clean:
 	-rm -Rf build/
+	-docker rm $(NAME)
 	-cd test && vagrant destroy -f
 
 
@@ -32,7 +34,7 @@ build/discoverytoken:
 
 test: build/discoverytoken
 	mkdir -p build/
-	tar -cvvf build/app.tar *.js package.json start.sh resources Dockerfile
+	tar -cvvf build/app.tar *.js openssl.conf package.json start.sh pkix resources Dockerfile
 
 	# Launch vagrant VM to host etcd-cert-server
 	# see test/Vagrantfile for bootstrapping info
@@ -41,3 +43,6 @@ test: build/discoverytoken
 
 	# Launch each worker (who will use core-master to bootstrap etcd)
 	cd test && vagrant up
+
+.PHONY: clean build test run
+

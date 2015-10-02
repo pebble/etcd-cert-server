@@ -36,7 +36,5 @@ write_files:
       /usr/bin/curl -o /etc/etcd/ssl/ca.crt http://172.17.8.99:8080/v1/certs/ca
       NAME=`hostname`
       /usr/bin/curl -XPOST http://172.17.8.99:8080/v1/certs/server/${NAME} | /bin/tar -xf - -C /etc/etcd/ssl
-      /bin/mv /etc/etcd/ssl/${NAME}.crt /etc/etcd/ssl/server.crt
-      /bin/mv /etc/etcd/ssl/${NAME}.key.insecure /etc/etcd/ssl/server.key
       /bin/chown etcd:etcd /etc/etcd/ssl/*
       /bin/chmod o-r /etc/etcd/ssl/*
