@@ -2,7 +2,7 @@
 
 var config = require('../../../config');
 var ca = require('../../../pkix/ca');
-var server = require('../../../pkix/server');
+var cert = require('../../../pkix/cert');
 
 exports.createServerCertificate = function*(next) {
   // ipv4 source IP:
@@ -10,7 +10,15 @@ exports.createServerCertificate = function*(next) {
     .replace(/^.*:/, '');
   var name = this.request.params.name;
 
-  this.body = yield server.generateServer(name, ip);
+  this.body = yield cert.generateServer(name, ip);
+  this.type = 'application/x-tar';
+  yield* next;
+};
+
+exports.createClientCertificate = function*(next) {
+  var name = this.request.params.name;
+
+  this.body = yield cert.generateClient(name);
   this.type = 'application/x-tar';
   yield* next;
 };
@@ -22,7 +30,7 @@ exports.getCaCertificate = function*(next) {
 };
 
 
-exports.setupCertRoutes = function (router) {
+exports.setupCertRoutes = function(router) {
   router.route({
     method: 'get',
     path: '/certs/ca',
@@ -32,10 +40,18 @@ exports.setupCertRoutes = function (router) {
   });
 
   router.route({
-    method: 'post',
+    method: 'get',
     path: '/certs/server/:name',
     handler: [
       exports.createServerCertificate
+    ]
+  });
+
+  router.route({
+    method: 'get',
+    path: '/certs/client/:name',
+    handler: [
+      exports.createClientCertificate
     ]
   });
 };

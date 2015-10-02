@@ -66,10 +66,22 @@ describe('pkix/cert', function() {
     let certTar = yield cert.generateServer('localhost', '127.0.0.1');
     let tarContents = yield extractTar(certTar);
 
-    assert(Object.keys(tarContents).length === 2);
+    assert(Object.keys(tarContents).length === 4);
 
     assert(tarContents['server.key'].match(/^-----BEGIN RSA PRIVATE KEY-----/));
     assert(tarContents['server.crt'].match(/^-----BEGIN CERTIFICATE-----/));
+    assert(tarContents['peer.key'].match(/^-----BEGIN RSA PRIVATE KEY-----/));
+    assert(tarContents['peer.crt'].match(/^-----BEGIN CERTIFICATE-----/));
+  });
+
+  it('generates client keys', function*() {
+    let certTar = yield cert.generateClient('localhost', '127.0.0.1');
+    let tarContents = yield extractTar(certTar);
+
+    assert(Object.keys(tarContents).length === 2);
+
+    assert(tarContents['client.key'].match(/^-----BEGIN RSA PRIVATE KEY-----/));
+    assert(tarContents['client.crt'].match(/^-----BEGIN CERTIFICATE-----/));
   });
 
 });

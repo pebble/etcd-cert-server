@@ -11,8 +11,8 @@ coreos:
     cert-file: /etc/etcd/ssl/server.crt
     key-file: /etc/etcd/ssl/server.key
     peer-ca-file: /etc/etcd/ssl/ca.crt
-    peer-cert-file: /etc/etcd/ssl/server.crt
-    peer-key-file: /etc/etcd/ssl/server.key
+    peer-cert-file: /etc/etcd/ssl/peer.crt
+    peer-key-file: /etc/etcd/ssl/peer.key
   units:
     - name: etcd2-ssl.service
       command: start
@@ -35,6 +35,6 @@ write_files:
       /usr/bin/mkdir -p /etc/etcd/ssl
       /usr/bin/curl -o /etc/etcd/ssl/ca.crt http://172.17.8.99:8080/v1/certs/ca
       NAME=`hostname`
-      /usr/bin/curl -XPOST http://172.17.8.99:8080/v1/certs/server/${NAME} | /bin/tar -xf - -C /etc/etcd/ssl
+      /usr/bin/curl http://172.17.8.99:8080/v1/certs/server/${NAME} | /bin/tar -xf - -C /etc/etcd/ssl
       /bin/chown etcd:etcd /etc/etcd/ssl/*
       /bin/chmod o-r /etc/etcd/ssl/*
