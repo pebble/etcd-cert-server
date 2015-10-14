@@ -1,7 +1,5 @@
 NAME=etcd-cert-server
 
-.PHONY: test
-
 build: build/docker-image
 
 build/docker-image:

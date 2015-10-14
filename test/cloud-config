@@ -33,6 +33,9 @@ write_files:
     content: |
       #!/bin/bash
       /usr/bin/mkdir -p /etc/etcd/ssl
+      until $(/usr/bin/curl --output /dev/null --silent --head --fail http://172.17.8.99:8080/v1/certs/ca); do
+        echo "not ready yet"
+      done
       /usr/bin/curl -o /etc/etcd/ssl/ca.crt http://172.17.8.99:8080/v1/certs/ca
       NAME=`hostname`
       /usr/bin/curl http://172.17.8.99:8080/v1/certs/server/${NAME} | /bin/tar -xf - -C /etc/etcd/ssl

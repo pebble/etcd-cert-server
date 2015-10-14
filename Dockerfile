@@ -18,3 +18,4 @@ ENV OPENSSL_CONF /app/openssl.conf
 ADD . /app
 
 CMD ["npm", "start"]
+

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": "true",
   "scripts": {
-    "start": "node --harmony server.js",
+    "start": "node server.js",
     "test": "mocha --recursive",
     "cover": "istanbul cover _mocha -- --recursive"
   },
