@@ -11,7 +11,6 @@ let config = require('../../config');
 let ca = require('../../pkix/ca');
 let cert = require('../../pkix/cert');
 
-
 function extractTar(tarBuffer) {
   return new Promise(function(resolve, reject) {
     var tarData = {};
@@ -58,6 +57,7 @@ describe('pkix/cert', function() {
 
     config.OPENSSL_CONF = confPath;
     config.KEY_STORAGE = tempDir;
+    config.KEY_SIZE = 512;
 
     yield ca.setup();
   });

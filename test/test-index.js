@@ -3,12 +3,21 @@
 let testSetup = require('./test-setup');
 let supertest = require('supertest');
 let assert = require('assert');
+let sinon = require('sinon');
 
 describe('/v1/certs', function() {
   let httpServer;
 
   before(function*() {
     httpServer = (yield testSetup.setupServer()).server;
+  });
+
+  beforeEach(function() {
+    this.sinon = sinon.sandbox.create();
+  });
+
+  afterEach(function() {
+    this.sinon.restore();
   });
 
   describe('/ca', function() {
@@ -46,4 +55,19 @@ describe('/v1/certs', function() {
         .expect(200, done);
     });
   });
+
+  describe('/certs/finalize', function() {
+    it('finalizes connection', function(done) {
+
+      // Stub out API calls:
+      let securityGroups = require('../aws/securityGroup');
+      this.sinon.stub(securityGroups, 'removeSecurityGroup', function() {
+        return Promise.resolve(true);
+      });
+
+      supertest(httpServer)
+        .get('/v1/certs/finalize')
+        .expect(200, done);
+    });
+  })
 });

@@ -15,6 +15,7 @@ describe('pkix/ca', function() {
 
     tempDir = temp.mkdirSync();
     config.KEY_STORAGE = tempDir;
+    config.KEY_SIZE = 512;
   });
 
   it('sets up cert directory', function* () {

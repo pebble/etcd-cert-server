@@ -3,11 +3,15 @@
 var config = require('../../../config');
 var ca = require('../../../pkix/ca');
 var cert = require('../../../pkix/cert');
+var ec2 = require('../../../aws/securityGroup');
 
-exports.createServerCertificate = function*(next) {
-  // ipv4 source IP:
+function getIp() {
   var ip = this.request.ip
     .replace(/^.*:/, '');
+  return ip;
+}
+exports.createServerCertificate = function*(next) {
+  var ip = getIp.call(this);
   var name = this.request.params.name;
 
   this.body = yield cert.generateServer(name, ip);
@@ -29,6 +33,12 @@ exports.getCaCertificate = function*(next) {
   yield* next;
 };
 
+exports.finalize = function*(next) {
+  var ip = getIp.call(this);
+  yield ec2.removeSecurityGroup(ip, config.CLIENT_SECURITY_GROUP);
+  this.body = '';
+  yield* next;
+};
 
 exports.setupCertRoutes = function(router) {
   router.route({
@@ -52,6 +62,14 @@ exports.setupCertRoutes = function(router) {
     path: '/certs/client/:name',
     handler: [
       exports.createClientCertificate
+    ]
+  });
+
+  router.route({
+    method: 'get',
+    path: '/certs/finalize',
+    handler: [
+      exports.finalize
     ]
   });
 };
