@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "mocha --recursive",
-    "cover": "istanbul cover _mocha -- --recursive"
+    "cover": "istanbul cover _mocha -- --recursive",
+    "lint": "eslint ./"
   },
   "dependencies": {
     "aws-sdk": "^2.2.9",
@@ -17,11 +18,21 @@
   },
   "devDependencies": {
     "co-mocha": "^1.1.2",
+    "eslint-config-pebble": "^1.2.0",
     "istanbul": "^0.3.21",
     "mocha": "^2.3.2",
     "sinon": "^1.17.1",
     "supertest": "^1.1.0",
     "temp": "^0.8.3"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": [
+      "pebble"
+    ],
+    "env": {
+      "node": true,
+      "mocha": true
+    }
+  }
 }

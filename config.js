@@ -1,3 +1,5 @@
+'use strict';
+
 exports.KEY_SIZE = 4096;
 
 exports.KEY_VALIDITY = 3650;

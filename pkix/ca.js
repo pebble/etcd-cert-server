@@ -15,7 +15,7 @@ function mkdir(path) {
       }
     })
     .catch(function(e) {
-      if (e.code == 'ENOENT') {
+      if (e.code === 'ENOENT') {
         return fsp.mkdir(path, 0o770);
       }
       throw e;
@@ -34,7 +34,7 @@ exports.setupDir = function() {
         mkdir(config.KEY_STORAGE + '/csr'),
         mkdir(config.KEY_STORAGE + '/newcerts'),
         mkdir(config.KEY_STORAGE + '/private')
-      ])
+      ]);
     })
     .then(function() {
       return Promise.all([
@@ -70,5 +70,5 @@ exports.setup = function() {
 
 exports.getCertificate = function() {
   let caCert = getCaCertPath();
-  return fsp.readFile(caCert)
+  return fsp.readFile(caCert);
 };

@@ -6,13 +6,13 @@ var cert = require('../../../pkix/cert');
 var ec2 = require('../../../aws/securityGroup');
 
 function getIp() {
-  var ip = this.request.ip
+  return this.request.ip
     .replace(/^.*:/, '');
-  return ip;
 }
+
 exports.createServerCertificate = function*(next) {
-  var ip = getIp.call(this);
-  var name = this.request.params.name;
+  let ip = getIp.call(this);
+  let name = this.request.params.name;
 
   this.body = yield cert.generateServer(name, ip);
   this.type = 'application/x-tar';
@@ -34,7 +34,7 @@ exports.getCaCertificate = function*(next) {
 };
 
 exports.finalize = function*(next) {
-  var ip = getIp.call(this);
+  let ip = getIp.call(this);
   yield ec2.removeSecurityGroup(ip, config.CLIENT_SECURITY_GROUP);
   this.body = '';
   yield* next;

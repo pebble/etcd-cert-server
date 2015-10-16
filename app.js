@@ -5,7 +5,6 @@ var logger = require('pebble-koa-server/logger');
 var resource = require('pebble-koa-server/resources');
 var join = require('path').join;
 
-
 var app = module.exports = koa();
 logger.setupAppLogging(app);
 

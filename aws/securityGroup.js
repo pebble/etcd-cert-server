@@ -58,5 +58,3 @@ exports.removeSecurityGroup = function(ip, sg) {
       .catch(reject);
   });
 };
-
-

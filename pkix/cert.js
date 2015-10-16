@@ -6,7 +6,6 @@ var tar = require('tar-stream');
 var openssl = require('./openssl');
 var config = require('../config');
 
-
 function* generateKey(name, csrPath, type) {
   let certSubject = '/O=Pebble/OU=' + config.ENVIRONMENT +
     '/CN=' + name + ' ' + type;
@@ -70,7 +69,6 @@ function* generateCertPair(name, ip, type, tarMap) {
   tarMap[type + '.key'] = yield generateKey(name, serverCsr, type);
   tarMap[type + '.crt'] = yield signCertificate(serverCsr, ip, 'etcd_' + type);
 }
-
 
 exports.generateServer = function* (name, ip) {
   name = name.replace(/[^\w]/g, '');

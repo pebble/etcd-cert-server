@@ -42,7 +42,6 @@ function extractTar(tarBuffer) {
   });
 }
 
-
 describe('pkix/cert', function() {
   before(function* () {
     temp.track(true);

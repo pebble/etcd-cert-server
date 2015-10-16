@@ -2,7 +2,6 @@
 
 require('co-mocha');
 
-
 exports.setupServer = function* () {
   let serverConfig = require('pebble-koa-server/config');
   let setupApp = require('../server');

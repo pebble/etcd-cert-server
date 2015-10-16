@@ -32,9 +32,10 @@ describe('/v1/certs', function() {
           }
           let certLines = res.text.split('\n');
           assert(certLines[0].match(/^-----BEGIN CERTIFICATE-----$/));
-          assert(certLines[certLines.length - 2].match(/^-----END CERTIFICATE-----$/));
+          assert(certLines[certLines.length - 2]
+            .match(/^-----END CERTIFICATE-----$/));
           done();
-        })
+        });
     });
   });
 
@@ -69,5 +70,5 @@ describe('/v1/certs', function() {
         .get('/v1/certs/finalize')
         .expect(200, done);
     });
-  })
+  });
 });
