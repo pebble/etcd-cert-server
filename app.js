@@ -8,4 +8,6 @@ var join = require('path').join;
 var app = module.exports = koa();
 logger.setupAppLogging(app);
 
+app.proxy = false;
+
 resource(app, join(__dirname, 'resources'));

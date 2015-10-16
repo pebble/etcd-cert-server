@@ -44,7 +44,7 @@ function* signCertificate(csrPath, ip, extensions) {
 }
 
 function tarFiles(tarMap) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     let pack = tar.pack();
 
     for (let filename of Object.keys(tarMap)) {
@@ -63,7 +63,7 @@ function tarFiles(tarMap) {
   });
 }
 
-function* generateCertPair(name, ip, type, tarMap) {
+function* generateCertPair(name, ip, type, tarMap) { // eslint-disable-line
   let serverCsr = config.KEY_STORAGE + '/csr/' + name + '-' + type + '.pem';
 
   tarMap[type + '.key'] = yield generateKey(name, serverCsr, type);
