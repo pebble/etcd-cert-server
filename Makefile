@@ -32,7 +32,7 @@ build/discoverytoken:
 
 test: build/discoverytoken
 	mkdir -p build/
-	tar -cvvf build/app.tar *.js openssl.conf package.json start.sh pkix resources Dockerfile
+	tar -cvvf build/app.tar *.js openssl.conf package.json start.sh aws pkix resources Dockerfile
 
 	# Launch vagrant VM to host etcd-cert-server
 	# see test/Vagrantfile for bootstrapping info
@@ -41,6 +41,7 @@ test: build/discoverytoken
 
 	# Launch each worker (who will use core-master to bootstrap etcd)
 	cd test && vagrant up
+	cd test && vagrant ssh core-01 -- ./test.sh
 
 .PHONY: clean build test run
 

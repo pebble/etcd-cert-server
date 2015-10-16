@@ -26,17 +26,14 @@ describe('pkix/ca', function() {
     assert(fs.lstatSync(tempDir + '/index.txt').isFile());
   });
 
-  it('handles broken existing tree', function(done) {
+  it('handles broken existing tree', function* () {
     fs.writeFileSync(tempDir + '/certs', '');
 
-    ca.setupDir()
-      .then(function() {
-        done('No exception!');
-      })
-      .catch(function(err) {
-        assert(err.message.match(/is not a directory/));
-        done();
-      });
+    try {
+      yield ca.setupDir();
+    } catch (err) {
+      assert(err.message.match(/is not a directory/));
+    }
   });
 
   it('generates CA root', function* () {

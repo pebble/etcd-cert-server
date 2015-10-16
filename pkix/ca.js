@@ -26,23 +26,21 @@ function getCaCertPath() {
   return config.KEY_STORAGE + '/certs/ca.pem';
 }
 
-exports.setupDir = function() {
-  return mkdir(config.KEY_STORAGE)
-    .then(function() {
-      return Promise.all([
-        mkdir(config.KEY_STORAGE + '/certs'),
-        mkdir(config.KEY_STORAGE + '/csr'),
-        mkdir(config.KEY_STORAGE + '/newcerts'),
-        mkdir(config.KEY_STORAGE + '/private')
-      ]);
-    })
-    .then(function() {
-      return Promise.all([
-        fsp.writeFile(config.KEY_STORAGE + '/index.txt', ''),
-        fsp.writeFile(config.KEY_STORAGE + '/index.txt.attr', ''),
-        fsp.writeFile(config.KEY_STORAGE + '/serial', '1000')
-      ]);
-    });
+exports.setupDir = function*() {
+  yield mkdir(config.KEY_STORAGE);
+
+  yield [
+    mkdir(config.KEY_STORAGE + '/certs'),
+    mkdir(config.KEY_STORAGE + '/csr'),
+    mkdir(config.KEY_STORAGE + '/newcerts'),
+    mkdir(config.KEY_STORAGE + '/private')
+  ];
+
+  yield [
+    fsp.writeFile(config.KEY_STORAGE + '/index.txt', ''),
+    fsp.writeFile(config.KEY_STORAGE + '/index.txt.attr', ''),
+    fsp.writeFile(config.KEY_STORAGE + '/serial', '1000')
+  ];
 };
 
 exports.generateCaCert = function() {
@@ -63,9 +61,9 @@ exports.generateCaCert = function() {
   ]);
 };
 
-exports.setup = function() {
-  return exports.setupDir()
-    .then(exports.generateCaCert);
+exports.setup = function*() {
+  yield exports.setupDir();
+  yield exports.generateCaCert();
 };
 
 exports.getCertificate = function() {
