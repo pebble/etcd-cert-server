@@ -1,14 +1,30 @@
 'use strict';
 
+let temp = require('temp');
+let fsp = require('fs-promise');
 let testSetup = require('./test-setup');
 let supertest = require('supertest');
 let assert = require('assert');
 let sinon = require('sinon');
+let config = require('../config');
 
 describe('/v1/certs', function() {
   let httpServer;
 
   before(function*() {
+    temp.track(true);
+    let tempDir = temp.mkdirSync();
+
+    // Clone OpenSSL config to temp dir:
+    let opensslConf = yield fsp.readFile('openssl.conf');
+    opensslConf = opensslConf.toString()
+      .replace(/\ndir[ ]*=[ ]*.*/g, '\ndir = ' + tempDir);
+    let confPath = tempDir + '/openssl.conf';
+    yield fsp.writeFile(confPath, opensslConf);
+
+    config.OPENSSL_CONF = confPath;
+    config.KEY_STORAGE = tempDir;
+    config.KEY_SIZE = 512;
     httpServer = (yield testSetup.setupServer()).server;
   });
 

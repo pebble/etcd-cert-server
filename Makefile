@@ -1,4 +1,5 @@
 NAME=etcd-cert-server
+ENV_VARS=PORT=0 NODE_ENV=test
 
 build: build/docker-image
 
@@ -27,11 +28,14 @@ test-travis: lint
 	@ $(ENV_VARS) \
 		node \
 		node_modules/.bin/istanbul cover \
-		./node_modules/.bin/_mocha \
-		--report lcovonly \
+		node_modules/.bin/_mocha \
 		-- \
 		--bail \
 		-A --recursive $(MOCHA_OPTS)
+	@ $(ENV_VARS) \
+		node \
+		node_modules/.bin/istanbul check-coverage \
+		--statements 100 --functions 100 --branches 100 --lines 100
 
 
 NUM_INSTANCES := $(shell grep '^$$num_instances' < test/Vagrantfile | sed 's/.*=[ ]*//' )
