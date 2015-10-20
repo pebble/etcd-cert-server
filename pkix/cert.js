@@ -63,28 +63,33 @@ function tarFiles(tarMap) {
   });
 }
 
-function* generateCertPair(name, ip, type, tarMap) { // eslint-disable-line
+function* generateCertPair(name, ip, type) {
   let serverCsr = config.KEY_STORAGE + '/csr/' + name + '-' + type + '.pem';
 
-  tarMap[type + '.key'] = yield generateKey(name, serverCsr, type);
-  tarMap[type + '.crt'] = yield signCertificate(serverCsr, ip, 'etcd_' + type);
+  let files = {};
+  files[type + '.key'] = yield generateKey(name, serverCsr, type);
+  files[type + '.crt'] = yield signCertificate(serverCsr, ip, 'etcd_' + type);
+  return files;
 }
 
-exports.generateServer = function* (name, ip) {
-  name = name.replace(/[^\w]/g, '');
-  var tarMap = {};
+function sanitizeName(name) {
+  return name.replace(/[^\w]/g, '');
+}
 
-  yield generateCertPair(name, ip, 'server', tarMap);
-  yield generateCertPair(name, ip, 'peer', tarMap);
+exports.generateServerKeysTar = function* (name, ip) {
+  name = sanitizeName(name);
 
-  return tarFiles(tarMap);
+  let serverKeyPair = yield generateCertPair(name, ip, 'server');
+  let peerKeyPair = yield generateCertPair(name, ip, 'peer', serverKeyPair);
+  let keyPairs = Object.assign({}, serverKeyPair, peerKeyPair);
+
+  return tarFiles(keyPairs);
 };
 
-exports.generateClient = function* (name) {
-  name = name.replace(/[^\w]/g, '');
-  var tarMap = {};
+exports.generateClientKeysTar = function* (name) {
+  name = sanitizeName(name);
 
-  yield generateCertPair(name, '', 'client', tarMap);
+  var clientKeyPair = yield generateCertPair(name, '', 'client');
 
-  return tarFiles(tarMap);
+  return tarFiles(clientKeyPair);
 };

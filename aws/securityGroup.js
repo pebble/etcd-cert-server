@@ -16,12 +16,16 @@ exports.describeInstance = function(ip) {
         return reject(err);
       }
 
-      if (!data || !data['Reservations']) {
-        return reject('Invalid response from EC2');
+      if (!data ||
+          !data['Reservations'] ||
+          !data['Reservations'][0] ||
+          !data['Reservations'][0]['Instances'] ||
+          !data['Reservations'][0]['Instances'][0] ||
+          !data['Reservations'][0]['Instances'][0]['SecurityGroups']) {
+        return reject(new Error('Invalid response from EC2'));
       }
 
-      let reservations = data['Reservations'][0];
-      let instance = reservations['Instances'][0];
+      let instance = data['Reservations'][0]['Instances'][0];
       return resolve(instance);
     });
   });

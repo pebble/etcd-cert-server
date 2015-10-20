@@ -28,7 +28,8 @@ describe('aws/securityGroups', function() {
       cb(undefined, {
         'Reservations': [{
           'Instances': [{
-            'InstanceId': INSTANCE_ID
+            'InstanceId': INSTANCE_ID,
+            'SecurityGroups': []
           }]
         }]
       });
@@ -57,7 +58,7 @@ describe('aws/securityGroups', function() {
 
     ec2.describeInstance(IP)
       .catch(function(err) {
-        assert.equal('Invalid response from EC2', err);
+        assert.equal('Invalid response from EC2', err.message);
         done();
       });
   });

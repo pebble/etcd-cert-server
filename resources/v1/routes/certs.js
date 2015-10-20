@@ -14,14 +14,14 @@ exports.createServerCertificate = function*() {
   let ip = getIp.call(this);
   let name = this.request.params.name;
 
-  this.body = yield cert.generateServer(name, ip);
+  this.body = yield cert.generateServerKeysTar(name, ip);
   this.type = 'application/x-tar';
 };
 
 exports.createClientCertificate = function*() {
   var name = this.request.params.name;
 
-  this.body = yield cert.generateClient(name);
+  this.body = yield cert.generateClientKeysTar(name);
   this.type = 'application/x-tar';
 };
 

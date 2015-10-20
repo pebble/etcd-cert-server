@@ -62,10 +62,11 @@ describe('pkix/cert', function() {
   });
 
   it('generates server keys', function*() {
-    let certTar = yield cert.generateServer('localhost', '127.0.0.1');
+    let certTar = yield cert.generateServerKeysTar('localhost', '127.0.0.1');
     let tarContents = yield extractTar(certTar);
 
     assert.strictEqual(Object.keys(tarContents).length, 4);
+    console.log(tarContents);
 
     assert(tarContents['server.key'].match(/^-----BEGIN RSA PRIVATE KEY-----/));
     assert(tarContents['server.crt'].match(/^-----BEGIN CERTIFICATE-----/));
@@ -74,7 +75,7 @@ describe('pkix/cert', function() {
   });
 
   it('generates client keys', function*() {
-    let certTar = yield cert.generateClient('localhost', '127.0.0.1');
+    let certTar = yield cert.generateClientKeysTar('localhost', '127.0.0.1');
     let tarContents = yield extractTar(certTar);
 
     assert.strictEqual(Object.keys(tarContents).length, 2);
