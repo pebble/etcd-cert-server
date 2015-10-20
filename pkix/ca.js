@@ -1,8 +1,8 @@
 'use strict';
 
-var fsp = require('fs-promise');
-var config = require('../config');
-var openssl = require('./openssl');
+let fsp = require('fs-promise');
+let config = require('../config');
+let openssl = require('./openssl');
 
 /**
  * Safe mkdir.

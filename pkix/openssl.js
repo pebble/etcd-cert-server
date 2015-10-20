@@ -1,6 +1,6 @@
 'use strict';
 
-var spawn = require('child-process-promise').spawn;
+let spawn = require('child-process-promise').spawn;
 
 module.exports = function openssl(params, ip) {
   ip = ip || '';

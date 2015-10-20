@@ -3,9 +3,9 @@
 let fsp = require('fs-promise');
 let temp = require('temp');
 let assert = require('assert');
-var concat = require('concat-stream');
+let concat = require('concat-stream');
 let tar = require('tar-stream');
-var stream = require('stream');
+let stream = require('stream');
 
 let config = require('../../config');
 let ca = require('../../pkix/ca');

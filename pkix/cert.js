@@ -1,10 +1,10 @@
 'use strict';
 
-var fsp = require('fs-promise');
-var concat = require('concat-stream');
-var tar = require('tar-stream');
-var openssl = require('./openssl');
-var config = require('../config');
+let fsp = require('fs-promise');
+let concat = require('concat-stream');
+let tar = require('tar-stream');
+let openssl = require('./openssl');
+let config = require('../config');
 
 function* generateKey(name, csrPath, type) {
   let certSubject = '/O=Pebble/OU=' + config.ENVIRONMENT +

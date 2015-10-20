@@ -1,8 +1,8 @@
 'use strict';
 
-var assert = require('assert');
+let assert = require('assert');
 
-var openssl = require('../../pkix/openssl');
+let openssl = require('../../pkix/openssl');
 
 describe('pkix/openssl', function() {
   it('wraps OpenSSL', function* () {
