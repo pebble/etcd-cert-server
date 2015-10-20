@@ -12,6 +12,10 @@ describe('/v1/certs', function() {
     httpServer = (yield testSetup.setupServer()).server;
   });
 
+  after(function*() {
+    yield testSetup.teardownServer(httpServer);
+  });
+
   beforeEach(function() {
     this.sinon = sinon.sandbox.create();
   });

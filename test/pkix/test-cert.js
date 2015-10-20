@@ -27,7 +27,7 @@ function extractTar(tarBuffer) {
         if (fileName.match(/.key$/) || fileName.match(/.crt/)) {
           tarData[fileName] = data.toString();
         } else {
-          reject('Invalid file: ' + fileName);
+          reject(new Error('Invalid file: ' + fileName));
         }
       }));
     });
