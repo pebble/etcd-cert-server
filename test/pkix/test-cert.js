@@ -11,7 +11,7 @@ let config = require('../../config');
 let ca = require('../../pkix/ca');
 let cert = require('../../pkix/cert');
 
-function extractTar(tarBuffer) {
+function extractTar(tarBytes) {
   return new Promise(function(resolve, reject) {
     var tarData = {};
 
@@ -37,7 +37,7 @@ function extractTar(tarBuffer) {
     });
 
     var certStream = new stream.PassThrough();
-    certStream.end(tarBuffer);
+    certStream.end(tarBytes);
     certStream.pipe(extract);
   });
 }

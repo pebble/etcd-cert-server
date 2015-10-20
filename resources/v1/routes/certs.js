@@ -46,7 +46,7 @@ exports.setupCertRoutes = function(router) {
   });
 
   router.route({
-    method: 'get',
+    method: 'post',
     path: '/certs/server/:name',
     handler: [
       exports.createServerCertificate
@@ -54,7 +54,7 @@ exports.setupCertRoutes = function(router) {
   });
 
   router.route({
-    method: 'get',
+    method: 'post',
     path: '/certs/client/:name',
     handler: [
       exports.createClientCertificate
@@ -62,7 +62,7 @@ exports.setupCertRoutes = function(router) {
   });
 
   router.route({
-    method: 'get',
+    method: 'post',
     path: '/certs/finalize',
     handler: [
       exports.finalize

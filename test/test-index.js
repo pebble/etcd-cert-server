@@ -62,7 +62,7 @@ describe('/v1/certs', function() {
   describe('/certs/server', function() {
     it('returns certificates', function(done) {
       supertest(httpServer)
-        .get('/v1/certs/server/test')
+        .post('/v1/certs/server/test')
         .expect('Content-Type', 'application/x-tar')
         .expect(200, done);
     });
@@ -71,7 +71,7 @@ describe('/v1/certs', function() {
   describe('/certs/client', function() {
     it('returns certificates', function(done) {
       supertest(httpServer)
-        .get('/v1/certs/client/test')
+        .post('/v1/certs/client/test')
         .expect('Content-Type', 'application/x-tar')
         .expect(200, done);
     });
@@ -87,7 +87,7 @@ describe('/v1/certs', function() {
       });
 
       supertest(httpServer)
-        .get('/v1/certs/finalize')
+        .post('/v1/certs/finalize')
         .expect(200, done);
     });
   });
