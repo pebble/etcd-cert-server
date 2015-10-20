@@ -66,11 +66,10 @@ describe('pkix/cert', function() {
     let tarContents = yield extractTar(certTar);
 
     assert.strictEqual(Object.keys(tarContents).length, 4);
-    console.log(tarContents);
 
-    assert(tarContents['server.key'].match(/^-----BEGIN RSA PRIVATE KEY-----/));
+    assert(tarContents['server.key'].match(/^-----BEGIN( RSA)? PRIVATE KEY-----/));
     assert(tarContents['server.crt'].match(/^-----BEGIN CERTIFICATE-----/));
-    assert(tarContents['peer.key'].match(/^-----BEGIN RSA PRIVATE KEY-----/));
+    assert(tarContents['peer.key'].match(/^-----BEGIN( RSA)? PRIVATE KEY-----/));
     assert(tarContents['peer.crt'].match(/^-----BEGIN CERTIFICATE-----/));
   });
 
@@ -80,7 +79,7 @@ describe('pkix/cert', function() {
 
     assert.strictEqual(Object.keys(tarContents).length, 2);
 
-    assert(tarContents['client.key'].match(/^-----BEGIN RSA PRIVATE KEY-----/));
+    assert(tarContents['client.key'].match(/^-----BEGIN( RSA)? PRIVATE KEY-----/));
     assert(tarContents['client.crt'].match(/^-----BEGIN CERTIFICATE-----/));
   });
 

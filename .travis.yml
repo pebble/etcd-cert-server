@@ -4,6 +4,8 @@ node_js:
 
 # To test Node v4, Travis needs to use a newer C++ compiler.
 # Source: https://github.com/nodejs/nan/issues/435#issuecomment-136063745
+# For more information about the nasty /dev/random hack, please see:
+# https://github.com/travis-ci/travis-ci/issues/1913#issuecomment-33891474
 addons:
   apt:
     sources:
