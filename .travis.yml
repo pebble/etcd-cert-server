@@ -14,6 +14,7 @@ addons:
 before_install:
   - export CXX=g++-4.8
   - $CXX --version
+  - openssl version
 
 script: "make test-travis"
 after_script: "npm install coveralls@2.11.1 && cat ./coverage/lcov.info | coveralls"

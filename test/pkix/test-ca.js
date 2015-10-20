@@ -49,8 +49,8 @@ describe('pkix/ca', function() {
 
     let certificate = yield ca.getCertificate();
     let certLines = certificate.toString().split('\n');
-    assert(certLines[0] === '-----BEGIN CERTIFICATE-----');
-    assert(certLines[certLines.length - 2] === '-----END CERTIFICATE-----');
+    assert.strictEqual(certLines[0], '-----BEGIN CERTIFICATE-----');
+    assert.strictEqual(certLines[certLines.length - 2], '-----END CERTIFICATE-----');
   });
 
 });
