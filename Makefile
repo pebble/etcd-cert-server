@@ -20,6 +20,18 @@ clean:
 	-docker rm $(NAME)
 	-cd test && vagrant destroy -f
 
+lint:
+	node_modules/.bin/eslint ./
+
+test-travis: lint
+	@ $(ENV_VARS) \
+		node \
+		node_modules/.bin/istanbul cover \
+		./node_modules/.bin/_mocha \
+		--report lcovonly \
+		-- \
+		--bail \
+		-A --recursive $(MOCHA_OPTS)
 
 
 NUM_INSTANCES := $(shell grep '^$$num_instances' < test/Vagrantfile | sed 's/.*=[ ]*//' )
@@ -43,5 +55,6 @@ test: build/discoverytoken
 	cd test && vagrant up
 	cd test && vagrant ssh core-01 -- ./test.sh
 
-.PHONY: clean build test run
+
+.PHONY: clean build test run test-travis lint
 

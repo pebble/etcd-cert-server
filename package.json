@@ -14,7 +14,7 @@
     "child-process-promise": "^1.1.0",
     "concat-stream": "^1.5.0",
     "fs-promise": "^0.3.1",
-    "pebble-koa-server": "git+https://1637ef6f13a5d0f008579819668bb4701f9585e8:x-oauth-basic@github.com/pebble/pebble-koa-server.git#3.0.0",
+    "pebble-koa-server": "git+https://1637ef6f13a5d0f008579819668bb4701f9585e8:x-oauth-basic@github.com/pebble/pebble-koa-server.git#3.0.1",
     "tar-stream": "^1.2.1"
   },
   "devDependencies": {

@@ -62,7 +62,7 @@ describe('aws/securityGroups', function() {
       });
   });
 
-  it('removes instance from security group - found', function() {
+  it('removes instance from security group - found', function(done) {
     this.sinon.stub(ec2, 'describeInstance', function() {
       return Promise.resolve({
         'InstanceId': INSTANCE_ID,
@@ -78,10 +78,13 @@ describe('aws/securityGroups', function() {
       cb();
     });
 
-    ec2.removeSecurityGroup(IP, SECURITY_GROUP);
+    ec2.removeSecurityGroup(IP, SECURITY_GROUP)
+      .then(function() {
+        done();
+      });
   });
 
-  it('removes instance from security group - not found', function() {
+  it('removes instance from security group - not found', function(done) {
     this.sinon.stub(ec2, 'describeInstance', function() {
       return Promise.resolve({
         'InstanceId': INSTANCE_ID,
@@ -92,7 +95,10 @@ describe('aws/securityGroups', function() {
     });
     this.sinon.stub(ec2.client, 'modifyInstanceAttribute', 0);
 
-    ec2.removeSecurityGroup(IP, SECURITY_GROUP);
+    ec2.removeSecurityGroup(IP, SECURITY_GROUP)
+      .then(function() {
+        done();
+      });
   });
 
   it('removes instance from security group - error', function(done) {
