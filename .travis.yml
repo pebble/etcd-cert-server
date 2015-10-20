@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-  - iojs-v3
-  - 4.1.2
+  - 4.2.1
 
 # To test Node v4, Travis needs to use a newer C++ compiler.
 # Source: https://github.com/nodejs/nan/issues/435#issuecomment-136063745
@@ -15,6 +14,12 @@ before_install:
   - export CXX=g++-4.8
   - $CXX --version
   - openssl version
+  - sudo apt-get update -qq
+  - sudo apt-get install --yes dpkg-dev fakeroot lintian python-apt rng-tools
+  - sudo rm -f /dev/random
+  - sudo mknod -m 0666 /dev/random c 1 9
+  - echo HRNGDEVICE=/dev/urandom | sudo tee /etc/default/rng-tools
+  - sudo /etc/init.d/rng-tools restart
 
 script: "make test-travis"
 after_script: "npm install coveralls@2.11.1 && cat ./coverage/lcov.info | coveralls"
