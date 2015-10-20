@@ -4,10 +4,10 @@ let ec2 = require('../../aws/securityGroup');
 let assert = require('assert');
 let sinon = require('sinon');
 
-let IP = '127.0.0.1';
-let INSTANCE_ID = 'i-123456';
-let SECURITY_GROUP = 'sg-123456';
-let SECURITY_GROUP_OTHER = 'sg-654321';
+const IP = '127.0.0.1';
+const INSTANCE_ID = 'i-123456';
+const SECURITY_GROUP = 'sg-123456';
+const SECURITY_GROUP_OTHER = 'sg-654321';
 
 describe('aws/securityGroups', function() {
   beforeEach(function() {

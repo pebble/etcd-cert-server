@@ -10,34 +10,30 @@ function getIp() {
     .replace(/^.*:/, '');
 }
 
-exports.createServerCertificate = function*(next) {
+exports.createServerCertificate = function*() {
   let ip = getIp.call(this);
   let name = this.request.params.name;
 
   this.body = yield cert.generateServer(name, ip);
   this.type = 'application/x-tar';
-  yield* next;
 };
 
-exports.createClientCertificate = function*(next) {
+exports.createClientCertificate = function*() {
   var name = this.request.params.name;
 
   this.body = yield cert.generateClient(name);
   this.type = 'application/x-tar';
-  yield* next;
 };
 
-exports.getCaCertificate = function*(next) {
+exports.getCaCertificate = function*() {
   this.body = yield ca.getCertificate();
   this.type = 'application/x-pem-file';
-  yield* next;
 };
 
-exports.finalize = function*(next) {
+exports.finalize = function*() {
   let ip = getIp.call(this);
   yield ec2.removeSecurityGroup(ip, config.CLIENT_SECURITY_GROUP);
   this.body = '';
-  yield* next;
 };
 
 exports.setupCertRoutes = function(router) {
