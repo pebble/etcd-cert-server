@@ -1,5 +1,6 @@
 NAME=etcd-cert-server
 ENV_VARS=PORT=0 NODE_ENV=test
+HUB_NAME=pwagner/etcd-cert-server
 
 build: build/docker-image
 
@@ -37,6 +38,9 @@ test-travis: lint
 		node_modules/.bin/istanbul check-coverage \
 		--statements 100 --functions 100 --branches 100 --lines 100
 
+deploy:
+	docker build -t $(HUB_NAME) .
+	docker push $(HUB_NAME)
 
 NUM_INSTANCES := $(shell grep '^$$num_instances' < test/Vagrantfile | sed 's/.*=[ ]*//' )
 
