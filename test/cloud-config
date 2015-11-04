@@ -1,0 +1,43 @@
+#cloud-config
+
+coreos:
+  etcd2:
+    discovery: __DISCOVERY__
+    advertise-client-urls: https://$public_ipv4:2379
+    initial-advertise-peer-urls: https://$private_ipv4:2380
+    listen-client-urls: https://0.0.0.0:2379,https://0.0.0.0:4001
+    listen-peer-urls: https://$private_ipv4:2380,https://$private_ipv4:7001
+    ca-file: /etc/etcd/ssl/ca.crt
+    cert-file: /etc/etcd/ssl/server.crt
+    key-file: /etc/etcd/ssl/server.key
+    peer-ca-file: /etc/etcd/ssl/ca.crt
+    peer-cert-file: /etc/etcd/ssl/peer.crt
+    peer-key-file: /etc/etcd/ssl/peer.key
+  units:
+    - name: etcd2-ssl.service
+      command: start
+      content: |
+        [Unit]
+        Description=Fetch SSL certificates for etcd
+        Before=etcd2.service
+
+        [Service]
+        Type=oneshot
+        ExecStart=/etc/etcd/get-certs.sh
+    - name: etcd2.service
+      command: start
+
+write_files:
+  - path: /etc/etcd/get-certs.sh
+    permissions: 0755
+    content: |
+      #!/bin/bash
+      /usr/bin/mkdir -p /etc/etcd/ssl
+      until $(/usr/bin/curl --output /dev/null --silent --head --fail http://172.17.8.99:8080/v1/certs/ca); do
+        echo "not ready yet"
+      done
+      /usr/bin/curl -o /etc/etcd/ssl/ca.crt http://172.17.8.99:8080/v1/certs/ca
+      NAME=`hostname`
+      /usr/bin/curl -XPOST http://172.17.8.99:8080/v1/certs/server/${NAME} | /bin/tar -xf - -C /etc/etcd/ssl
+      /bin/chown etcd:etcd /etc/etcd/ssl/*
+      /bin/chmod o-r /etc/etcd/ssl/*

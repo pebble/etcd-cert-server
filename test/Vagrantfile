@@ -1,0 +1,44 @@
+# Parameters
+$num_instances = 3
+$update_channel = "stable"
+
+Vagrant.configure("2") do |config|
+  config.ssh.insert_key = false
+  config.vm.box = "coreos-%s" % $update_channel
+  config.vm.box_url = "http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant.json" % $update_channel
+
+  config.vm.provider :virtualbox do |v|
+    # On VirtualBox, we don't have guest additions or a functional vboxsf
+    v.check_guest_additions = false
+    v.functional_vboxsf     = false
+  end
+
+  config.vm.define "core-master" do |config|
+      config.vm.hostname = 'core-master'
+      ip = "172.17.8.99"
+      config.vm.network :private_network, ip: ip
+      config.vm.network "forwarded_port", guest: 8080, host: 8080
+
+      # Build container in core-os sandbox:
+      config.vm.provision :file, :source => "../build/app.tar", :destination => "/home/core/app.tar"
+      config.vm.provision :shell, :inline => "mkdir appbuild && cd appbuild && tar -xf ../app.tar && docker build -t etcd-cert-server ."
+
+      # Run container:
+      config.vm.provision :shell, :inline => "docker run -d -v /dev/urandom:/dev/random -p 8080:8080 --name etcd-cert-server etcd-cert-server"
+  end
+
+  (1..$num_instances).each do |i|
+    vm_name = "core-%02d" % [i]
+    config.vm.define vm_name do |config|
+      config.vm.hostname = vm_name
+
+      ip = "172.17.8.#{i+100}"
+      config.vm.network :private_network, ip: ip
+
+      config.vm.provision :file, :source => "../build/cloud-config", :destination => "/tmp/vagrantfile-user-data"
+      config.vm.provision :file, :source => "../test/test.sh", :destination => "/home/core/test.sh"
+      config.vm.provision :shell, :inline => "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", :privileged => true
+    end
+  end
+end
+
